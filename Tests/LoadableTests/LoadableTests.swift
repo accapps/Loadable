@@ -2,10 +2,13 @@ import XCTest
 @testable import Loadable
 
 final class LoadableTests: XCTestCase {
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct
-        // results.
-        XCTAssertEqual(Loadable().text, "Hello, World!")
+    struct Users: Codable {
+        let fact: String
+        let length: Int
+    }
+
+    func testExample() async {
+        let users: Users? = await Loadable<Users>(url: URL(string: "https://catfact.ninja/fact")!).request()
+        XCTAssertNotNil(users)
     }
 }
