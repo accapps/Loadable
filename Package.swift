@@ -7,7 +7,7 @@ let package = Package(
     name: "Loadable",
     platforms: [
         .iOS(.v13),
-        .macOS(.v10_15),
+        .macOS(.v12),
         .tvOS(.v13),
         .watchOS(.v6),
     ],
@@ -29,6 +29,7 @@ let package = Package(
             dependencies: []),
         .testTarget(
             name: "LoadableTests",
-            dependencies: ["Loadable"]),
+            dependencies: ["Loadable"],
+            resources: [.process("Resources")]),
     ]
 )
