@@ -1,6 +1,6 @@
 # Loadable
 
-![example workflow](https://github.com/github/docs/actions/workflows/swift.yml/badge.svg)
+![SPM](https://github.com/umutonat/Loadable/.github/workflows/swift.yml/badge.svg)
 
  Loadable simplifies the REST-API Calls and utilizes Swift 5 syntax
 
