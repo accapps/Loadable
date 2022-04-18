@@ -71,7 +71,7 @@ public struct Loadable {
      */
     public func request<T: Codable>() async -> T? {
         do {
-            let (data, _) = try await URLSession.shared.data(from: urlRequest)
+            let (data, _) = try await URLSession.shared.data(for: urlRequest)
             return try JSONDecoder().decode(T.self, from: data)
         } catch {
             print("Loadable Error: \(error)")
@@ -92,7 +92,7 @@ public struct Loadable {
      */
     public func request<T: Codable>() async -> (T?, URLResponse?) {
         do {
-            let (data, urlResponse) = try await URLSession.shared.data(from: urlRequest)
+            let (data, urlResponse) = try await URLSession.shared.data(for: urlRequest)
             return (try JSONDecoder().decode(T.self, from: data), urlResponse)
         } catch {
             print("Loadable Error: \(error)")
@@ -113,7 +113,7 @@ public struct Loadable {
      */
     public func request<T: Codable>() async -> (T?, Int?) {
         do {
-            let (data, urlResponse) = try await URLSession.shared.data(from: urlRequest)
+            let (data, urlResponse) = try await URLSession.shared.data(for: urlRequest)
             return (try JSONDecoder().decode(T.self, from: data), (urlResponse as? HTTPURLResponse)?.statusCode)
         } catch {
             print("Loadable Error: \(error)")
@@ -127,6 +127,7 @@ public struct Loadable {
      - parameter delegate: to handle events, default nil
      - returns: Downloaded file url and urlResponse `(URL?, UrlResponse?)`
 
+     ignores `URLSessionTaskDelegate` iOS, tvOS < 15, watchOS < 8
      Example
      ```
      let (url: URL?, urlResponse: URLResponse?) = await Loadable(url: URL(string: "https://catfact.ninja/fact")!).download()
@@ -151,7 +152,7 @@ public struct Loadable {
      - returns: Downloaded file url and urlResponse `(URL?, UrlResponse?)`
 
      Make sure URLRequest has set `HTTPMethod` as .post
-
+     ignores `URLSessionTaskDelegate` iOS, tvOS < 15, watchOS < 8
      Example
      ```
      let (url: URL?, urlResponse: URLResponse?) = await Loadable(url: URL(string: "https://catfact.ninja/fact")!, httpMethod: .post).upload(fileUrl: url)
