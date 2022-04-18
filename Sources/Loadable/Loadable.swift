@@ -13,7 +13,7 @@ import Foundation
  - Version: 1.1.0
  */
 public struct Loadable {
-    enum HTTPMethod: String {
+    public enum HTTPMethod: String {
         case get = "GET"
         case post = "POST"
         case put = "PUT"
@@ -69,7 +69,7 @@ public struct Loadable {
      - Author:  [Umut Onat Artuvan](https://github.com/umutonat)
      - Version: 1.1.0
      */
-    func request<T: Codable>() async -> T? {
+    public func request<T: Codable>() async -> T? {
         do {
             let (data, _) = try await URLSession.shared.data(from: urlRequest)
             return try JSONDecoder().decode(T.self, from: data)
@@ -90,7 +90,7 @@ public struct Loadable {
      - Author:  [Umut Onat Artuvan](https://github.com/umutonat)
      - Version: 1.1.0
      */
-    func request<T: Codable>() async -> (T?, URLResponse?) {
+    public func request<T: Codable>() async -> (T?, URLResponse?) {
         do {
             let (data, urlResponse) = try await URLSession.shared.data(from: urlRequest)
             return (try JSONDecoder().decode(T.self, from: data), urlResponse)
@@ -111,7 +111,7 @@ public struct Loadable {
      - Author:  [Umut Onat Artuvan](https://github.com/umutonat)
      - Version: 1.1.0
      */
-    func request<T: Codable>() async -> (T?, Int?) {
+    public func request<T: Codable>() async -> (T?, Int?) {
         do {
             let (data, urlResponse) = try await URLSession.shared.data(from: urlRequest)
             return (try JSONDecoder().decode(T.self, from: data), (urlResponse as? HTTPURLResponse)?.statusCode)
@@ -134,7 +134,7 @@ public struct Loadable {
      - Author:  [Umut Onat Artuvan](https://github.com/umutonat)
      - Version: 1.1.0
      */
-    func download(delegate: URLSessionTaskDelegate? = nil) async -> (URL?, URLResponse?) {
+    public func download(delegate: URLSessionTaskDelegate? = nil) async -> (URL?, URLResponse?) {
         do {
             return try await URLSession.shared.download(for: urlRequest, delegate: delegate)
         } catch {
@@ -159,7 +159,7 @@ public struct Loadable {
      - Author:  [Umut Onat Artuvan](https://github.com/umutonat)
      - Version: 1.1.0
      */
-    func upload(fileUrl: URL, delegate: URLSessionTaskDelegate? = nil) async -> (Data?, URLResponse?) {
+    public func upload(fileUrl: URL, delegate: URLSessionTaskDelegate? = nil) async -> (Data?, URLResponse?) {
         guard urlRequest.httpMethod == HTTPMethod.post.rawValue else {
             print("Loadable Error: make sure HTTPMethod is set to .post")
             return (nil, nil)
