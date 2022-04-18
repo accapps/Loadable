@@ -43,7 +43,7 @@ public struct Loadable {
      - Author:  [Umut Onat Artuvan](https://github.com/umutonat)
      - Version: 1.1.0
      */
-    init(
+    public init(
         url: URL,
         httpHeaders: [String: String] = [:],
         httpMethod: HTTPMethod = .get,
