@@ -57,6 +57,23 @@ public struct Loadable {
         urlRequest.httpBody = httpBody
     }
 
+    /**
+     Initializer of the Loadable
+
+     - parameter urlRequest: `URLRequest` for the request
+
+     Example
+     ```
+     Loadable(urlRequest: URLRequest(url: URL(string: "https://catfact.ninja/fact")!))
+     ```
+
+     - Author:  [Umut Onat Artuvan](https://github.com/umutonat)
+     - Version: 1.3.0
+     */
+    public init(urlRequest: URLRequest) {
+        self.urlRequest = urlRequest
+    }
+
 
     /**
      Executes the request that is configured by initializer
