@@ -84,12 +84,12 @@ public struct Loadable {
      let users: Users? = await Loadable(url: URL(string: "https://catfact.ninja/fact")!).request()
      ```
      - Author:  [Umut Onat Artuvan](https://github.com/umutonat)
-     - Version: 1.2.0
+     - Version: 1.4.0
      */
-    public func request<T: Codable>() async -> T? {
+    public func request<T: Codable>(decoder: JSONDecoder = JSONDecoder()) async -> T? {
         do {
             let (data, _) = try await URLSession.shared.data(for: urlRequest)
-            return try JSONDecoder().decode(T.self, from: data)
+            return try decoder.decode(T.self, from: data)
         } catch {
             print("Loadable Error: \(error)")
             return nil
@@ -105,12 +105,12 @@ public struct Loadable {
      let (users: Users?, urlResponse: URLResponse?) = await Loadable(url: URL(string: "https://catfact.ninja/fact")!).request()
      ```
      - Author:  [Umut Onat Artuvan](https://github.com/umutonat)
-     - Version: 1.2.0
+     - Version: 1.4.0
      */
-    public func request<T: Codable>() async -> (T?, URLResponse?) {
+    public func request<T: Codable>(decoder: JSONDecoder = JSONDecoder()) async -> (T?, URLResponse?) {
         do {
             let (data, urlResponse) = try await URLSession.shared.data(for: urlRequest)
-            return (try JSONDecoder().decode(T.self, from: data), urlResponse)
+            return (try decoder.decode(T.self, from: data), urlResponse)
         } catch {
             print("Loadable Error: \(error)")
             return (nil, nil)
@@ -147,12 +147,12 @@ public struct Loadable {
      let (users: Users?, statusCode: Int?) = await Loadable(url: URL(string: "https://catfact.ninja/fact")!).request()
      ```
      - Author:  [Umut Onat Artuvan](https://github.com/umutonat)
-     - Version: 1.2.0
+     - Version: 1.4.0
      */
-    public func request<T: Codable>() async -> (T?, Int?) {
+    public func request<T: Codable>(decoder: JSONDecoder = JSONDecoder()) async -> (T?, Int?) {
         do {
             let (data, urlResponse) = try await URLSession.shared.data(for: urlRequest)
-            return (try JSONDecoder().decode(T.self, from: data), (urlResponse as? HTTPURLResponse)?.statusCode)
+            return (try decoder.decode(T.self, from: data), (urlResponse as? HTTPURLResponse)?.statusCode)
         } catch {
             print("Loadable Error: \(error)")
             return (nil, nil)
