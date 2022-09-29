@@ -8,9 +8,9 @@
 import Foundation
 
 extension URLSession {
-    @available(watchOS, deprecated: 8.0, message: "Use data function provided by Apple")
-    @available(tvOS, deprecated: 15.0, message: "Use data function provided by Apple")
-    @available(iOS, deprecated: 15.0, message: "Use data function provided by Apple")
+    @available(watchOS, deprecated: 8.0, obsoleted: 8.0, message: "Use data function provided by Apple")
+    @available(tvOS, deprecated: 15.0, obsoleted: 15.0, message: "Use data function provided by Apple")
+    @available(iOS, deprecated: 15.0, obsoleted: 15.0, message: "Use data function provided by Apple")
     func data(for urlRequest: URLRequest) async throws -> (Data, URLResponse) {
         try await withCheckedThrowingContinuation { continuation in
             let task = self.dataTask(with: urlRequest) { data, response, error in
@@ -24,9 +24,9 @@ extension URLSession {
         }
     }
 
-    @available(watchOS, deprecated: 8.0, message: "Use download function provided by Apple")
-    @available(tvOS, deprecated: 15.0, message: "Use download function provided by Apple")
-    @available(iOS, deprecated: 15.0, message: "Use download function provided by Apple")
+    @available(watchOS, deprecated: 8.0, obsoleted: 8.0, message: "Use data function provided by Apple")
+    @available(tvOS, deprecated: 15.0, obsoleted: 15.0, message: "Use data function provided by Apple")
+    @available(iOS, deprecated: 15.0, obsoleted: 15.0, message: "Use data function provided by Apple")
     func download(for request: URLRequest, delegate: URLSessionTaskDelegate? = nil) async throws -> (URL, URLResponse) {
         try await withCheckedThrowingContinuation { continuation in
             let task = self.downloadTask(with: request) { url, response, error in
@@ -40,9 +40,9 @@ extension URLSession {
         }
     }
 
-    @available(watchOS, deprecated: 8.0, message: "Use upload function provided by Apple")
-    @available(tvOS, deprecated: 15.0, message: "Use upload function provided by Apple")
-    @available(iOS, deprecated: 15.0, message: "Use upload function provided by Apple")
+    @available(watchOS, deprecated: 8.0, obsoleted: 8.0, message: "Use data function provided by Apple")
+    @available(tvOS, deprecated: 15.0, obsoleted: 15.0, message: "Use data function provided by Apple")
+    @available(iOS, deprecated: 15.0, obsoleted: 15.0, message: "Use data function provided by Apple")
     func upload(for request: URLRequest, fromFile fileURL: URL, delegate: URLSessionTaskDelegate? = nil) async throws -> (Data, URLResponse) {
         try await withCheckedThrowingContinuation { continuation in
             let task = self.uploadTask(with: request, fromFile: fileURL) { data, response, error in
