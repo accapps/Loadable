@@ -10,7 +10,7 @@ import Foundation
 /**
  Loadable simplifies the REST-API Calls and utilizes Swift 5 syntax
  - Author: [Umut Onat Artuvan](https://github.com/umutonat)
- - Version: 1.2.0
+ - Version: 2.0.0
  */
 public struct Loadable {
     public enum HTTPMethod: String {
@@ -41,7 +41,7 @@ public struct Loadable {
      ```
 
      - Author:  [Umut Onat Artuvan](https://github.com/umutonat)
-     - Version: 1.2.0
+     - Version: 2.0.0
      */
     public init(
         url: URL,
@@ -68,7 +68,7 @@ public struct Loadable {
      ```
 
      - Author:  [Umut Onat Artuvan](https://github.com/umutonat)
-     - Version: 1.3.0
+     - Version: 2.0.0
      */
     public init(urlRequest: URLRequest) {
         self.urlRequest = urlRequest
@@ -84,16 +84,11 @@ public struct Loadable {
      let users: Users? = await Loadable(url: URL(string: "https://catfact.ninja/fact")!).request()
      ```
      - Author:  [Umut Onat Artuvan](https://github.com/umutonat)
-     - Version: 1.4.0
+     - Version: 2.0.0
      */
-    public func request<T: Codable>(decoder: JSONDecoder = JSONDecoder()) async -> T? {
-        do {
-            let (data, _) = try await URLSession.shared.data(for: urlRequest)
-            return try decoder.decode(T.self, from: data)
-        } catch {
-            print("Loadable Error: \(error)")
-            return nil
-        }
+    public func request<T: Codable>(decoder: JSONDecoder = JSONDecoder()) async throws -> T? {
+        let (data, _) = try await URLSession.shared.data(for: urlRequest)
+        return try decoder.decode(T.self, from: data)
     }
 
     /**
@@ -105,16 +100,11 @@ public struct Loadable {
      let (users: Users?, urlResponse: URLResponse?) = await Loadable(url: URL(string: "https://catfact.ninja/fact")!).request()
      ```
      - Author:  [Umut Onat Artuvan](https://github.com/umutonat)
-     - Version: 1.4.0
+     - Version: 2.0.0
      */
-    public func request<T: Codable>(decoder: JSONDecoder = JSONDecoder()) async -> (T?, URLResponse?) {
-        do {
-            let (data, urlResponse) = try await URLSession.shared.data(for: urlRequest)
-            return (try decoder.decode(T.self, from: data), urlResponse)
-        } catch {
-            print("Loadable Error: \(error)")
-            return (nil, nil)
-        }
+    public func request<T: Codable>(decoder: JSONDecoder = JSONDecoder()) async throws -> (T?, URLResponse?) {
+        let (data, urlResponse) = try await URLSession.shared.data(for: urlRequest)
+        return (try decoder.decode(T.self, from: data), urlResponse)
     }
 
     /**
@@ -126,16 +116,11 @@ public struct Loadable {
      let (data: Data?, urlResponse: URLResponse?) = await Loadable(url: URL(string: "https://catfact.ninja/fact")!).request()
      ```
      - Author:  [Umut Onat Artuvan](https://github.com/umutonat)
-     - Version: 1.2.0
+     - Version: 2.0.0
      */
-    public func request() async -> (Data?, URLResponse?) {
-        do {
-            let (data, urlResponse) = try await URLSession.shared.data(for: urlRequest)
-            return (data, urlResponse)
-        } catch {
-            print("Loadable Error: \(error)")
-            return (nil, nil)
-        }
+    public func request() async throws -> (Data?, URLResponse?) {
+        let (data, urlResponse) = try await URLSession.shared.data(for: urlRequest)
+        return (data, urlResponse)
     }
 
     /**
@@ -147,16 +132,13 @@ public struct Loadable {
      let (users: Users?, statusCode: Int?) = await Loadable(url: URL(string: "https://catfact.ninja/fact")!).request()
      ```
      - Author:  [Umut Onat Artuvan](https://github.com/umutonat)
-     - Version: 1.4.0
+     - Version: 2.0.0
      */
-    public func request<T: Codable>(decoder: JSONDecoder = JSONDecoder()) async -> (T?, Int?) {
-        do {
-            let (data, urlResponse) = try await URLSession.shared.data(for: urlRequest)
-            return (try decoder.decode(T.self, from: data), (urlResponse as? HTTPURLResponse)?.statusCode)
-        } catch {
-            print("Loadable Error: \(error)")
-            return (nil, nil)
-        }
+    public func request<T: Codable>(decoder: JSONDecoder = JSONDecoder()) async throws -> (T?, Int?) {
+
+        let (data, urlResponse) = try await URLSession.shared.data(for: urlRequest)
+        return (try decoder.decode(T.self, from: data), (urlResponse as? HTTPURLResponse)?.statusCode)
+
     }
 
     /**
@@ -168,39 +150,27 @@ public struct Loadable {
      let (data: Data?, statusCode: Int?) = await Loadable(url: URL(string: "https://catfact.ninja/fact")!).request()
      ```
      - Author:  [Umut Onat Artuvan](https://github.com/umutonat)
-     - Version: 1.2.0
+     - Version: 2.0.0
      */
-    public func request() async -> (Data?, Int?) {
-        do {
-            let (data, urlResponse) = try await URLSession.shared.data(for: urlRequest)
-            return (data, (urlResponse as? HTTPURLResponse)?.statusCode)
-        } catch {
-            print("Loadable Error: \(error)")
-            return (nil, nil)
-        }
+    public func request() async throws -> (Data?, Int?) {
+        let (data, urlResponse) = try await URLSession.shared.data(for: urlRequest)
+        return (data, (urlResponse as? HTTPURLResponse)?.statusCode)
     }
 
     /**
      Downloads data for the configured UrlRequest
 
      - parameter delegate: to handle events, default nil
-     - returns: Downloaded file url and urlResponse `(URL?, UrlResponse?)`
-
-     ignores `URLSessionTaskDelegate` iOS, tvOS < 15, watchOS < 8
+     - returns: Downloaded file url and urlResponse `(URL, UrlResponse)`
      Example
      ```
-     let (url: URL?, urlResponse: URLResponse?) = await Loadable(url: URL(string: "https://catfact.ninja/fact")!).download()
+     let (url: URL, urlResponse: URLResponse) = await Loadable(url: URL(string: "https://catfact.ninja/fact")!).download()
      ```
      - Author:  [Umut Onat Artuvan](https://github.com/umutonat)
-     - Version: 1.2.0
+     - Version: 2.0.0
      */
-    public func download(delegate: URLSessionTaskDelegate? = nil) async -> (URL?, URLResponse?) {
-        do {
-            return try await URLSession.shared.download(for: urlRequest, delegate: delegate)
-        } catch {
-            print("Loadable Error: \(error)")
-            return (nil, nil)
-        }
+    public func download(delegate: URLSessionTaskDelegate? = nil) async throws -> (URL, URLResponse) {
+        return try await URLSession.shared.download(for: urlRequest, delegate: delegate)
     }
 
     /**
@@ -208,27 +178,42 @@ public struct Loadable {
 
      - parameter fileUrl: file  to upload
      - parameter delegate: to handle events, default nil
-     - returns: Downloaded file url and urlResponse `(URL?, UrlResponse?)`
+     - returns: Downloaded file url and urlResponse `(URL, UrlResponse)`
 
      Make sure URLRequest has set `HTTPMethod` as .post
-     ignores `URLSessionTaskDelegate` iOS, tvOS < 15, watchOS < 8
      Example
      ```
-     let (url: URL?, urlResponse: URLResponse?) = await Loadable(url: URL(string: "https://catfact.ninja/fact")!, httpMethod: .post).upload(fileUrl: url)
+     let (url: URL, urlResponse: URLResponse) = await Loadable(url: URL(string: "https://catfact.ninja/fact")!, httpMethod: .post).upload(fileUrl: url)
      ```
      - Author:  [Umut Onat Artuvan](https://github.com/umutonat)
-     - Version: 1.2.0
+     - Version: 2.0.0
      */
-    public func upload(fileUrl: URL, delegate: URLSessionTaskDelegate? = nil) async -> (Data?, URLResponse?) {
+    public func upload(fileUrl: URL, delegate: URLSessionTaskDelegate? = nil) async throws -> (Data, URLResponse) {
         guard urlRequest.httpMethod == HTTPMethod.post.rawValue else {
-            print("Loadable Error: make sure HTTPMethod is set to .post")
-            return (nil, nil)
+            throw LoadableError.wrongHttpMethod
         }
-        do {
-            return try await URLSession.shared.upload(for: urlRequest, fromFile: fileUrl, delegate: delegate)
-        } catch {
-            print("Loadable Error: \(error)")
-            return (nil, nil)
+        return try await URLSession.shared.upload(for: urlRequest, fromFile: fileUrl, delegate: delegate)
+    }
+
+    /**
+     Downloads data for the configured UrlRequest
+
+     - parameter from: data  to upload
+     - parameter delegate: to handle events, default nil
+     - returns: Downloaded file url and urlResponse `(URL, UrlResponse)`
+
+     Make sure URLRequest has set `HTTPMethod` as .post
+     Example
+     ```
+     let (url: URL?, urlResponse: URLResponse?) = await Loadable(url: URL(string: "https://catfact.ninja/fact")!, httpMethod: .post).upload(from: data)
+     ```
+     - Author:  [Umut Onat Artuvan](https://github.com/umutonat)
+     - Version: 2.0.0
+     */
+    public func upload(from data: Data, delegate: URLSessionTaskDelegate? = nil) async throws -> (Data, URLResponse) {
+        guard urlRequest.httpMethod == HTTPMethod.post.rawValue else {
+            throw LoadableError.wrongHttpMethod
         }
+        return try await URLSession.shared.upload(for: urlRequest, from: data, delegate: delegate)
     }
 }

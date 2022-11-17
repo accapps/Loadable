@@ -8,20 +8,19 @@ final class LoadableTests: XCTestCase {
     }
 
     func testRequest() async {
-        let users: Cat? = await Loadable(url: URL(string: "https://catfact.ninja/fact")!).request()
-        XCTAssertNotNil(users)
-
+        let cat: Cat? = try? await Loadable(url: URL(string: "https://catfact.ninja/fact")!).request()
+        XCTAssertNotNil(cat)
     }
 
-    func testDownload() async {
-        let (url, urlResponse) = await Loadable(url: URL(string: "https://www.buds.com.ua/images/Lorem_ipsum.pdf")!).download()
+    func testDownload() async throws {
+        let (url, urlResponse) = try await Loadable(url: URL(string: "https://www.buds.com.ua/images/Lorem_ipsum.pdf")!).download()
         XCTAssertNotNil(url)
-        XCTAssert(urlResponse?.mimeType == "application/pdf")
+        XCTAssert(urlResponse.mimeType == "application/pdf")
     }
 
-    func testUpload () async {
-        let (data, urlResponse) = await Loadable(url: URL(string: "https://httpbin.org/post")!, httpMethod: .post).upload(fileUrl: Bundle.module.url(forResource: "Lorem_ipsum", withExtension:"pdf")!)
+    func testUpload () async throws {
+        let (data, urlResponse) = try await Loadable(url: URL(string: "https://httpbin.org/post")!, httpMethod: .post).upload(fileUrl: Bundle.module.url(forResource: "Lorem_ipsum", withExtension:"pdf")!)
         XCTAssertNotNil(data)
-        XCTAssert((urlResponse! as! HTTPURLResponse).statusCode == 200)
+        XCTAssert((urlResponse as! HTTPURLResponse).statusCode == 200)
     }
 }
