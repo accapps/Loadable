@@ -249,9 +249,6 @@ public struct Loadable {
      */
     @available(iOS 15, *)
     public func upload(from data: Data, delegate: URLSessionTaskDelegate? = nil) async throws -> (Data, URLResponse) {
-        guard urlRequest.httpMethod == HTTPMethod.post.rawValue else {
-            throw LoadableError.wrongHttpMethod
-        }
         return try await URLSession.shared.upload(for: urlRequest, from: data, delegate: delegate)
     }
 
@@ -270,9 +267,6 @@ public struct Loadable {
      - Version: 2.0.0
      */
     public func upload(from data: Data) async throws -> (Data, URLResponse) {
-        guard urlRequest.httpMethod == HTTPMethod.post.rawValue else {
-            throw LoadableError.wrongHttpMethod
-        }
         return try await URLSession.shared.upload(for: urlRequest, from: data)
     }
 }
