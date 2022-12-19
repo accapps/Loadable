@@ -93,6 +93,22 @@ public struct Loadable {
 
     /**
      Executes the request that is configured by initializer
+     - returns: Provided type `T` and its data
+
+     Example
+     ```
+     let (users: Users?, data: Data?) = await Loadable(url: URL(string: "https://catfact.ninja/fact")!).request()
+     ```
+     - Author:  [Umut Onat Artuvan](https://github.com/umutonat)
+     - Version: 2.0.0
+     */
+    public func request<T: Codable>(decoder: JSONDecoder = JSONDecoder()) async throws -> (T?, Data?) {
+        let (data, _) = try await URLSession.shared.data(for: urlRequest)
+        return (try decoder.decode(T.self, from: data), data)
+    }
+
+    /**
+     Executes the request that is configured by initializer
      - returns: Provided type `T` and urlResponse `(T?, URLResponse?)`
 
      Example
