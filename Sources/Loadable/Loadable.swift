@@ -93,34 +93,18 @@ public struct Loadable {
 
     /**
      Executes the request that is configured by initializer
-     - returns: Provided type `T` and its data
+     - returns: Provided type `T`, data and urlResponse `(T?, URLResponse?)`
 
      Example
      ```
-     let (users: Users?, data: Data?) = await Loadable(url: URL(string: "https://catfact.ninja/fact")!).request()
+     let (users: Users?, data: Data?, urlResponse: URLResponse?) = await Loadable(url: URL(string: "https://catfact.ninja/fact")!).request()
      ```
      - Author:  [Umut Onat Artuvan](https://github.com/umutonat)
      - Version: 2.0.0
      */
-    public func request<T: Codable>(decoder: JSONDecoder = JSONDecoder()) async throws -> (T?, Data?) {
-        let (data, _) = try await URLSession.shared.data(for: urlRequest)
-        return (try decoder.decode(T.self, from: data), data)
-    }
-
-    /**
-     Executes the request that is configured by initializer
-     - returns: Provided type `T` and urlResponse `(T?, URLResponse?)`
-
-     Example
-     ```
-     let (users: Users?, urlResponse: URLResponse?) = await Loadable(url: URL(string: "https://catfact.ninja/fact")!).request()
-     ```
-     - Author:  [Umut Onat Artuvan](https://github.com/umutonat)
-     - Version: 2.0.0
-     */
-    public func request<T: Codable>(decoder: JSONDecoder = JSONDecoder()) async throws -> (T?, URLResponse?) {
+    public func request<T: Codable>(decoder: JSONDecoder = JSONDecoder()) async throws -> (T?, Data?, URLResponse?) {
         let (data, urlResponse) = try await URLSession.shared.data(for: urlRequest)
-        return (try decoder.decode(T.self, from: data), urlResponse)
+        return (try decoder.decode(T.self, from: data), data, urlResponse)
     }
 
     /**
